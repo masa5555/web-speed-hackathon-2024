@@ -17,6 +17,8 @@ export const ComicPageImage: React.FC<Props> = ({ pageImageId }) => {
       image.src = getImageUrl({
         format: 'jxl',
         imageId: pageImageId,
+        height: 304,
+        width: 216,
       });
       await image.decode();
 
