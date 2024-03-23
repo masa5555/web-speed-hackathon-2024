@@ -19,9 +19,10 @@ import { CoverSection } from './internal/CoverSection';
 
 const TopPage: React.FC = () => {
   const todayStr = getDayOfWeekStr(moment());
-  const { data: release } = useRelease({ params: { dayOfWeek: todayStr } });
-  const { data: featureList } = useFeatureList({ query: {} });
-  const { data: rankingList } = useRankingList({ query: {} });
+
+  const { data: release, isLoading: isLoadingRelease } = useRelease({ params: { dayOfWeek: todayStr } });
+  const { data: featureList, isLoading: isLoadingFeature } = useFeatureList({ query: {} });
+  const { data: rankingList, isLoading: isLoadingRanking } = useRankingList({ query: {} });
 
   const pickupA11yId = useId();
   const rankingA11yId = useId();
@@ -40,9 +41,8 @@ const TopPage: React.FC = () => {
           <Spacer height={Space * 2} />
           <Box maxWidth="100%" overflowX="scroll" overflowY="hidden">
             <Flex align="stretch" direction="row" gap={Space * 2} justify="flex-start">
-              {_.map(featureList, (feature) => (
-                <FeatureCard key={feature.id} bookId={feature.book.id} />
-              ))}
+              {!isLoadingFeature &&
+                _.map(featureList, (feature) => <FeatureCard key={feature.id} bookId={feature.book.id} />)}
             </Flex>
           </Box>
         </Box>
@@ -56,9 +56,8 @@ const TopPage: React.FC = () => {
           <Spacer height={Space * 2} />
           <Box maxWidth="100%" overflowX="hidden" overflowY="hidden">
             <Flex align="center" as="ul" direction="column" justify="center">
-              {_.map(rankingList, (ranking) => (
-                <RankingCard key={ranking.id} bookId={ranking.book.id} />
-              ))}
+              {!isLoadingRanking &&
+                _.map(rankingList, (ranking) => <RankingCard key={ranking.id} bookId={ranking.book.id} />)}
             </Flex>
           </Box>
         </Box>
@@ -72,9 +71,7 @@ const TopPage: React.FC = () => {
           <Spacer height={Space * 2} />
           <Box maxWidth="100%" overflowX="scroll" overflowY="hidden">
             <Flex align="stretch" gap={Space * 2} justify="flex-start">
-              {_.map(release.books, (book) => (
-                <BookCard key={book.id} bookId={book.id} />
-              ))}
+              {!isLoadingRelease && _.map(release?.books, (book) => <BookCard key={book.id} bookId={book.id} />)}
             </Flex>
           </Box>
         </Box>
