@@ -43,7 +43,6 @@ type Props = {
 
 const RankingCard: React.FC<Props> = ({ bookId }) => {
   const { data: book } = useBook({ params: { bookId } });
-
   const imageUrl = useImage({ height: 96, imageId: book.image.id, width: 96 });
   const authorImageUrl = useImage({ height: 32, imageId: book.author.image.id, width: 32 });
 
