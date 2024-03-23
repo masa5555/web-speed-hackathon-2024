@@ -12,6 +12,6 @@ async function main() {
 }
 
 main().catch((err) => {
-  console.error(err);
+  console.error({ serverErr: err });
   process.exitCode = 1;
 });

@@ -37,7 +37,7 @@ app.route('/', adminApp);
 app.route('/', ssrApp);
 
 app.onError((cause) => {
-  console.error(cause);
+  console.error({ cause });
 
   if (cause instanceof HTTPException) {
     return cause.getResponse();
