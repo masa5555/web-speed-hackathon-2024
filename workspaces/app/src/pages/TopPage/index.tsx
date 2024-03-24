@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import moment from 'moment-timezone';
 import { Suspense, useId } from 'react';
 
@@ -42,7 +41,7 @@ const TopPage: React.FC = () => {
           <Box maxWidth="100%" overflowX="scroll" overflowY="hidden">
             <Flex align="stretch" direction="row" gap={Space * 2} justify="flex-start">
               {!isLoadingFeature &&
-                _.map(featureList, (feature) => <FeatureCard key={feature.id} bookId={feature.book.id} />)}
+                featureList.map((feature) => <FeatureCard key={feature.id} bookId={feature.book.id} />)}
             </Flex>
           </Box>
         </Box>
@@ -57,7 +56,7 @@ const TopPage: React.FC = () => {
           <Box maxWidth="100%" overflowX="hidden" overflowY="hidden">
             <Flex align="center" as="ul" direction="column" justify="center">
               {!isLoadingRanking &&
-                _.map(rankingList, (ranking) => ranking && <RankingCard key={ranking.id} bookId={ranking.book.id} />)}
+                rankingList.map((ranking) => ranking && <RankingCard key={ranking.id} bookId={ranking.book.id} />)}
             </Flex>
           </Box>
         </Box>
@@ -71,7 +70,7 @@ const TopPage: React.FC = () => {
           <Spacer height={Space * 2} />
           <Box maxWidth="100%" overflowX="scroll" overflowY="hidden">
             <Flex align="stretch" gap={Space * 2} justify="flex-start">
-              {!isLoadingRelease && _.map(release?.books, (book) => <BookCard key={book.id} bookId={book.id} />)}
+              {!isLoadingRelease && release?.books.map( (book) => <BookCard key={book.id} bookId={book.id} />)}
             </Flex>
           </Box>
         </Box>
