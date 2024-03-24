@@ -1,11 +1,23 @@
-import { useAtom } from 'jotai';
+
+import { useAtom, useAtomValue } from 'jotai';
+import $ from 'jquery';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 
 import { SvgIcon } from '../../features/icons/components/SvgIcon';
-import { DialogContentAtom } from '../atoms/DialogContentAtom';
-import { Color, Space } from '../styles/variables';
+import { DialogContentAtom, isOpenDialogAtom } from '../atoms/DialogContentAtom';
+import { COMPANY } from '../constants/Company';
+import { CONTACT } from '../constants/Contact';
+import { OVERVIEW } from '../constants/Overview';
+import { QUESTION } from '../constants/Question';
+import { TERM } from '../constants/Term';
+import { Color, Space, Typography } from '../styles/variables';
+
+
 
 import { Button } from './Button';
+import { Spacer } from './Spacer';
+import { Text } from './Text';
 
 const _Overlay = styled.div`
   position: fixed;
@@ -44,16 +56,58 @@ const _CloseButton = styled(Button)`
   left: -${Space * 1}px;
 `;
 
-export const Dialog: React.FC = () => {
-  const [content, updateContent] = useAtom(DialogContentAtom);
+const _Content = styled.section`
+  white-space: pre-line;
+`;
 
-  return content != null ? (
+const selectContent = (title: string) => {
+  if (title === '利用規約') {
+    return TERM;
+  }
+  if (title === 'お問い合わせ') {
+    return CONTACT;
+  }
+  if (title === 'Q&A') {
+    return QUESTION;
+  }
+  if (title === '運営会社') {
+    return COMPANY;
+  }
+  if (title === 'Cyber TOONとは') {
+    return OVERVIEW;
+  }
+  return ''
+}
+
+export const Dialog: React.FC = () => {
+
+  const content = useAtomValue(DialogContentAtom);
+  const [isOpenDialog, setIsOpenDialog] = useAtom(isOpenDialogAtom);
+  useEffect(() => {
+    if (isOpenDialog) {
+      $('body').css('overflow', 'hidden');
+    } else {
+      $('body').css('overflow', 'scroll');
+    }
+  }, [isOpenDialog])
+
+  return isOpenDialog ? (
     <_Overlay>
       <_Wrapper>
-        <_CloseButton onClick={() => updateContent(null)}>
+        <_CloseButton onClick={() => {setIsOpenDialog(false)}}>
           <SvgIcon color={Color.MONO_A} height={32} type="Close" width={32} />
         </_CloseButton>
-        <_Container>{content}</_Container>
+        <_Container>
+          <_Content aria-labelledby={content.a11yId} role="dialog">
+            <Text as="h2" color={Color.MONO_100} id={content.a11yId} typography={Typography.NORMAL16}>
+              {content.title}
+            </Text>
+            <Spacer height={Space * 1} />
+            <Text as="p" color={Color.MONO_100} typography={Typography.NORMAL12}>
+              {selectContent(content.title)}
+            </Text>
+          </_Content>
+        </_Container>
       </_Wrapper>
     </_Overlay>
   ) : null;

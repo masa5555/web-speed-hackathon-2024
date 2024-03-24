@@ -9,7 +9,10 @@
   リーダーボード: https://web-speed-hackathon-scoring-server-2024.fly.dev
   課題レポジトリ: https://github.com/CyberAgentHack/web-speed-hackathon-2024
   https://web-speed-hack-2024-masa5555.koyeb.app/
-
+```
+   E2E_BASE_URL=https://web-speed-hack-2024-masa5555.koyeb.app/ pnpm
+ test
+````
 unicode-collation-algorithm2をlazy import
 画像の改善を早めに
 画像の圧縮
